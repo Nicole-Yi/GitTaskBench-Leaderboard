@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GitTaskBench Submission",
+  "type": "object",
+  "required": [
+    "model",
+    "date",
+    "completion",
+    "pass"
+  ],
+  "properties": {
+    "model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "framework": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "open_source": {
+      "type": "boolean"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "commit_sha": {
+      "type": "string"
+    },
+    "completion": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "pass": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "alpha": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "cost": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "iterations": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "config_url": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitTaskBench Leaderboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="description" content="GitTaskBench: repo-level benchmark for real-world Code Agents — leaderboard of model & agent results." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🧰</text></svg>">
+  <style>
+    .container-narrow{max-width:1100px}
+    th.sortable{cursor:pointer}
+  </style>
+</head>
+<body class="bg-neutral-950 text-neutral-100">
+  <!-- Nav -->
+  <header class="border-b border-neutral-800 sticky top-0 backdrop-blur bg-neutral-950/70 z-50">
+    <div class="mx-auto container-narrow px-4 py-3 flex items-center justify-between">
+      <a href="#" class="font-semibold tracking-wide">GitTaskBench Leaderboard</a>
+      <nav class="space-x-5 text-sm">
+        <a href="#leaderboard" class="hover:underline">Leaderboard</a>
+        <a href="#submit" class="hover:underline">提交</a>
+        <a href="#faq" class="hover:underline">FAQ</a>
+        <a href="https://github.com/QuantaAlpha/GitTaskBench" target="_blank" class="inline-block rounded-lg px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700">Benchmark</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="mx-auto container-narrow px-4 py-12">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+          面向<span class="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">真实仓库级任务</span>的代码智能体评测
+        </h1>
+        <p class="mt-4 text-neutral-300">
+          GitTaskBench 评测智能体在真实 GitHub 仓库中完成复杂任务的能力：从仓库理解 → 环境搭建 → 迭代开发/修复 → 任务交付。
+          下方为模型/框架在 <span class="font-semibold">Execution Completion</span> 与 <span class="font-semibold">Task Pass</span> 等指标上的成绩。
+        </p>
+        <div class="mt-6 flex gap-3">
+          <a href="#leaderboard" class="rounded-xl px-4 py-2 bg-cyan-500/20 ring-1 ring-cyan-500/40 hover:bg-cyan-500/30">查看榜单</a>
+          <a href="#submit" class="rounded-xl px-4 py-2 bg-emerald-500/20 ring-1 ring-emerald-500/40 hover:bg-emerald-500/30">提交结果</a>
+        </div>
+        <p class="mt-6 text-xs text-neutral-400">
+          最后更新：<span id="last-updated">2025-09-10</span>
+        </p>
+      </div>
+      <div class="rounded-2xl border border-neutral-800 p-6 bg-neutral-900/40">
+        <h3 class="font-semibold mb-3">指标速览</h3>
+        <ul class="space-y-2 text-sm text-neutral-300">
+          <li>Execution Completion（是否产出有效结果）</li>
+          <li>Task Pass（是否满足任务特定评测标准）</li>
+          <li>α（可选）：考虑性能与成本的折中评分</li>
+        </ul>
+        <p class="mt-4 text-neutral-400 text-xs">指标定义与实现以 <a class="underline" href="https://github.com/QuantaAlpha/GitTaskBench" target="_blank">GitTaskBench</a> 官方仓库为准。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leaderboard -->
+  <section id="leaderboard" class="mx-auto container-narrow px-4 pb-16">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">Leaderboard</h2>
+      <div class="flex items-center gap-2">
+        <input id="search" placeholder="搜索模型/框架…" class="px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-sm" />
+        <select id="domainFilter" class="px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-sm">
+          <option value="">全部领域</option>
+          <option>Image</option>
+          <option>Video</option>
+          <option>Speech</option>
+          <option>Physio</option>
+          <option>Security</option>
+          <option>Web</option>
+          <option>Office</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-2xl border border-neutral-800">
+      <table class="min-w-full text-sm" id="lb-table">
+        <thead class="bg-neutral-900/60">
+          <tr>
+            <th class="px-3 py-2 text-left sortable" data-key="rank">Rank</th>
+            <th class="px-3 py-2 text-left sortable" data-key="model">Model</th>
+            <th class="px-3 py-2 text-left sortable" data-key="framework">Framework</th>
+            <th class="px-3 py-2 text-left sortable" data-key="completion">Exec&nbsp;Completion</th>
+            <th class="px-3 py-2 text-left sortable" data-key="pass">Task&nbsp;Pass</th>
+            <th class="px-3 py-2 text-left sortable" data-key="alpha">α</th>
+            <th class="px-3 py-2 text-left sortable" data-key="cost">Cost&nbsp;($)</th>
+            <th class="px-3 py-2 text-left sortable" data-key="date">Date</th>
+            <th class="px-3 py-2 text-left">Config</th>
+          </tr>
+        </thead>
+        <tbody id="lb-body" class="divide-y divide-neutral-800"></tbody>
+      </table>
+    </div>
+    <p class="text-xs text-neutral-500 mt-3">提示：点击表头可排序；支持搜索、按领域筛选。</p>
+  </section>
+
+  <!-- Submit -->
+  <section id="submit" class="mx-auto container-narrow px-4 pb-16">
+    <h2 class="text-2xl font-bold mb-4">如何提交</h2>
+    <ol class="list-decimal pl-5 space-y-2 text-neutral-300">
+      <li>Fork 本仓库，新增文件到 <code class="bg-neutral-900 px-1.5 py-0.5 rounded">data/submissions/</code>，每个提交一个 JSON（见 <a class="underline" href="schema/submission.schema.json">schema</a> 与示例）。</li>
+      <li>在 PR 中附上：评测配置（命令/迭代数/温度/系统提示等）、关键日志与结果文件（可链接至公开 gist 或 repo）。</li>
+      <li>通过自动化校验后，合并即会触发 GitHub Pages 部署，榜单自动更新。</li>
+    </ol>
+    <p class="text-xs text-neutral-400 mt-2">注：指标与判定脚本应与 <a class="underline" href="https://github.com/QuantaAlpha/GitTaskBench" target="_blank">GitTaskBench</a> 一致。必要时可附带复现实验的脚本与 commit 哈希。</p>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="mx-auto container-narrow px-4 pb-24">
+    <h2 class="text-2xl font-bold mb-4">FAQ</h2>
+    <details class="mb-3 rounded-xl border border-neutral-800 p-4">
+      <summary class="font-semibold cursor-pointer">α 分数如何计算？</summary>
+      <p class="mt-2 text-neutral-300">α 是兼顾效果与成本的综合分（可选）。若未提供则以 “—” 显示。建议参考论文/官方实现确定公式，并在提交中注明计算方式。</p>
+    </details>
+    <details class="mb-3 rounded-xl border border-neutral-800 p-4">
+      <summary class="font-semibold cursor-pointer">我可以只提交个别领域的结果吗？</summary>
+      <p class="mt-2 text-neutral-300">可以。请在 <code>domains</code> 字段标注已覆盖的领域（如 Image/Web/Office）。排行榜默认按整体指标排序。</p>
+    </details>
+    <details class="mb-3 rounded-xl border border-neutral-800 p-4">
+      <summary class="font-semibold cursor-pointer">是否支持自动抓取 GitTaskBench 结果目录？</summary>
+      <p class="mt-2 text-neutral-300">推荐通过 PR 方式提交聚合结果。若要自动抓取，可在 Actions 中添加脚本，从公开存储拉取 <code>test_results</code> 进行聚合后生成 JSON。</p>
+    </details>
+  </section>
+
+  <footer class="border-t border-neutral-800">
+    <div class="mx-auto container-narrow px-4 py-6 text-sm text-neutral-400">
+      © 2025-09-10 GitTaskBench · 基于 GitHub Pages 部署 · 参考样式：FutureX
+    </div>
+  </footer>
+
+  <script src="assets/leaderboard.js"></script>
+</body>
+</html>
