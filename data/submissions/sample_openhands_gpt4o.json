@@ -1,19 +1,14 @@
 {
   "model": "GPT-4o",
   "framework": "OpenHands",
+  "organization": "OpenAI",
   "open_source": false,
-  "date": "2025-09-10",
-  "commit_sha": "abcdef123456",
+  "commit_date": "2025-09-10",
   "completion": 0.78,
   "pass": 0.42,
   "alpha": 0.395,
   "cost": 37.22,
   "iterations": 70,
-  "domains": [
-    "Image",
-    "Web",
-    "Office"
-  ],
   "config_url": "https://github.com/QuantaAlpha/GitTaskBench/blob/main/test_reports/evaluation_report_openhands_gpt4o_70iters.txt",
   "notes": "官方示例，数值为占位演示。以实际跑分为准。"
 }

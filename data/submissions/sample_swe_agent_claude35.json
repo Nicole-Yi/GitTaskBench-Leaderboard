@@ -1,19 +1,14 @@
 {
   "model": "Claude 3.5 Sonnet",
   "framework": "SWE-Agent",
+  "organization": "Anthropic",
   "open_source": false,
-  "date": "2025-09-10",
-  "commit_sha": "7890abcd",
+  "commit_date": "2025-09-10",
   "completion": 0.81,
   "pass": 0.47,
   "alpha": 0.433,
   "cost": 41.05,
   "iterations": 70,
-  "domains": [
-    "Image",
-    "Speech",
-    "Office"
-  ],
   "config_url": "",
   "notes": "演示数据。"
 }

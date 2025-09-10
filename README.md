@@ -1,6 +1,14 @@
+<!--
+ * @Author: Nicole-Yi studyworklove@foxmail.com
+ * @Date: 2025-09-10 21:00:34
+ * @LastEditors: Nicole-Yi studyworklove@foxmail.com
+ * @LastEditTime: 2025-09-10 21:38:19
+ * @FilePath: \GitTaskBench-Leaderboard\README.md
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 # GitTaskBench Leaderboard
 
-静态网站（GitHub Pages）用于展示 **GitTaskBench** 评测榜单。外观与交互参考 [FutureX 站点]，实现上采用纯静态 HTML + Tailwind + JS，便于快速部署与维护。
+静态网站（GitHub Pages）用于展示 **GitTaskBench** 评测榜单，实现上采用纯静态 HTML + Tailwind + JS，便于快速部署与维护。
 
 ## 目录结构
 ```
@@ -17,13 +25,12 @@
 ## 提交规范（PR）
 - 在 `data/submissions/` 下添加一个 JSON，字段规范见 [`schema/submission.schema.json`](schema/submission.schema.json)。建议字段：
   - `model`：模型或代理名称（必填）
-  - `framework`：所用框架（如 OpenHands / SWE-Agent / Aider）
+  - `framework`：所用框架（如 OpenHands / SWE-Agent / Aider / RepoMaster）
   - `completion`：Execution Completion（0~1，详见基准说明）
   - `pass`：Task Pass（0~1）
-  - `alpha`：可选，综合分
+  - `alpha`：可选，性价比综合分
   - `cost`：可选，总花费（美元）
-  - `iterations`：可选，最大迭代数
-  - `domains`：覆盖领域（Image/Video/Speech/Physio/Security/Web/Office）
+  - `iterations`：可选，最大迭代参数
   - `config_url`：可选，评测配置/报告链接
   - `notes`：备注
 - PR 将触发校验与部署：
@@ -31,7 +38,7 @@
   2. 运行 `scripts/aggregate.py`（内联在 workflow 中）将 `data/submissions/*.json` 聚合为 `data/models.json`；
   3. 部署到 GitHub Pages。
 
-> 指标定义以 GitTaskBench 官方仓库为准：Execution Completion 与 Task Pass【see: README】。
+> 指标定义以 GitTaskBench 官方仓库为准：Execution Completion 与 Task Pass[【see: README】](https://github.com/QuantaAlpha/GitTaskBench)。
 
 ## 本地预览
 > 任何静态服务器均可，例如：
@@ -50,4 +57,5 @@ npx http-server -p 8080
 
 ## 版权与引用
 - 基准：QuantaAlpha/GitTaskBench
-- 参考样式：FutureX
+- 团队: QuantaAlpha
+- Paper: [GitTaskBench: A Benchmark for Evaluating Git-Based Task-Oriented Programming](https://arxiv.org/abs/2508.18993)

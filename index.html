@@ -63,38 +63,33 @@
       <h2 class="text-2xl font-bold">Leaderboard</h2>
       <div class="flex items-center gap-2">
         <input id="search" placeholder="搜索模型/框架…" class="px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-sm" />
-        <select id="domainFilter" class="px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-sm">
-          <option value="">全部领域</option>
-          <option>Image</option>
-          <option>Video</option>
-          <option>Speech</option>
-          <option>Physio</option>
-          <option>Security</option>
-          <option>Web</option>
-          <option>Office</option>
-        </select>
+        <input type="date" id="startDate" class="px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-sm" placeholder="开始日期" />
+        <input type="date" id="endDate" class="px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-800 text-sm" placeholder="结束日期" />
       </div>
     </div>
 
     <div class="overflow-x-auto rounded-2xl border border-neutral-800">
-      <table class="min-w-full text-sm" id="lb-table">
-        <thead class="bg-neutral-900/60">
-          <tr>
-            <th class="px-3 py-2 text-left sortable" data-key="rank">Rank</th>
-            <th class="px-3 py-2 text-left sortable" data-key="model">Model</th>
-            <th class="px-3 py-2 text-left sortable" data-key="framework">Framework</th>
-            <th class="px-3 py-2 text-left sortable" data-key="completion">Exec&nbsp;Completion</th>
-            <th class="px-3 py-2 text-left sortable" data-key="pass">Task&nbsp;Pass</th>
-            <th class="px-3 py-2 text-left sortable" data-key="alpha">α</th>
-            <th class="px-3 py-2 text-left sortable" data-key="cost">Cost&nbsp;($)</th>
-            <th class="px-3 py-2 text-left sortable" data-key="date">Date</th>
-            <th class="px-3 py-2 text-left">Config</th>
-          </tr>
-        </thead>
-        <tbody id="lb-body" class="divide-y divide-neutral-800"></tbody>
-      </table>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm" id="lb-table">
+          <thead class="bg-neutral-900/60">
+            <tr>
+              <th class="px-3 py-2 text-left sortable" data-key="rank">Rank</th>
+              <th class="px-3 py-2 text-left sortable" data-key="model">Model</th>
+              <th class="px-3 py-2 text-left sortable" data-key="organization">Organization</th>
+              <th class="px-3 py-2 text-left sortable" data-key="framework">Framework</th>
+              <th class="px-3 py-2 text-left sortable" data-key="completion">Exec&nbsp;Completion</th>
+              <th class="px-3 py-2 text-left sortable" data-key="pass">Task&nbsp;Pass</th>
+              <th class="px-3 py-2 text-left sortable" data-key="alpha">α</th>
+              <th class="px-3 py-2 text-left sortable" data-key="cost">Cost&nbsp;($)</th>
+              <th class="px-3 py-2 text-left sortable" data-key="commit_date">Commit&nbsp;Date</th>
+              <th class="px-3 py-2 text-left">Config</th>
+            </tr>
+          </thead>
+          <tbody id="lb-body" class="divide-y divide-neutral-800"></tbody>
+        </table>
+      </div>
     </div>
-    <p class="text-xs text-neutral-500 mt-3">提示：点击表头可排序；支持搜索、按领域筛选。</p>
+    <p class="text-xs text-neutral-500 mt-3">提示：点击表头可排序；支持搜索、按时间段筛选。</p>
   </section>
 
   <!-- Submit -->
@@ -113,7 +108,7 @@
     <h2 class="text-2xl font-bold mb-4">FAQ</h2>
     <details class="mb-3 rounded-xl border border-neutral-800 p-4">
       <summary class="font-semibold cursor-pointer">α 分数如何计算？</summary>
-      <p class="mt-2 text-neutral-300">α 是兼顾效果与成本的综合分（可选）。若未提供则以 “—” 显示。建议参考论文/官方实现确定公式，并在提交中注明计算方式。</p>
+      <p class="mt-2 text-neutral-300">α 是兼顾效果与成本的性价比综合分（可选）。若未提供则以 “—” 显示。建议参考论文/官方实现确定公式，并在提交中注明计算方式。</p>
     </details>
     <details class="mb-3 rounded-xl border border-neutral-800 p-4">
       <summary class="font-semibold cursor-pointer">我可以只提交个别领域的结果吗？</summary>
@@ -127,7 +122,7 @@
 
   <footer class="border-t border-neutral-800">
     <div class="mx-auto container-narrow px-4 py-6 text-sm text-neutral-400">
-      © 2025-09-10 GitTaskBench · 基于 GitHub Pages 部署 · 参考样式：FutureX
+      © 2025-09-10 GitTaskBench · 基于 GitHub Pages 部署 · 团队组织: QuantaAlpha
     </div>
   </footer>
 

@@ -21,12 +21,13 @@ function renderTable(rows) {
     tr.innerHTML = `
       <td class="px-3 py-2">${i + 1}</td>
       <td class="px-3 py-2">${r.model}</td>
+      <td class="px-3 py-2">${r.organization || '—'}</td>
       <td class="px-3 py-2">${r.framework || '—'}</td>
       <td class="px-3 py-2">${r.completion != null ? (r.completion*100).toFixed(1) + '%' : '—'}</td>
       <td class="px-3 py-2">${r.pass != null ? (r.pass*100).toFixed(1) + '%' : '—'}</td>
       <td class="px-3 py-2">${r.alpha != null ? r.alpha.toFixed(3) : '—'}</td>
       <td class="px-3 py-2">${r.cost != null ? '$' + r.cost.toFixed(2) : '—'}</td>
-      <td class="px-3 py-2">${r.date || ''}</td>
+      <td class="px-3 py-2">${r.commit_date || ''}</td>
       <td class="px-3 py-2">${cfgLink}</td>
     `;
     tbody.appendChild(tr);
@@ -71,11 +72,32 @@ function attachSorting(rows) {
 
 function filterRows(rows) {
   const q = document.getElementById('search').value.trim().toLowerCase();
-  const domain = document.getElementById('domainFilter').value;
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  
   return rows.filter(r => {
-    const hit = (r.model + ' ' + (r.framework || '')).toLowerCase().includes(q);
-    const domOk = !domain || (r.domains || []).includes(domain);
-    return hit && domOk;
+    const hit = (r.model + ' ' + (r.organization || '') + ' ' + (r.framework || '')).toLowerCase().includes(q);
+    
+    // Date filtering logic
+    let dateOk = true;
+    if (startDate || endDate) {
+      const rowDate = r.commit_date ? new Date(r.commit_date) : null;
+      if (rowDate) {
+        if (startDate) {
+          const start = new Date(startDate);
+          dateOk = dateOk && rowDate >= start;
+        }
+        if (endDate) {
+          const end = new Date(endDate);
+          dateOk = dateOk && rowDate <= end;
+        }
+      } else {
+        // If row has no date but date filter is applied, exclude it
+        dateOk = false;
+      }
+    }
+    
+    return hit && dateOk;
   });
 }
 
@@ -85,8 +107,16 @@ function filterRows(rows) {
   renderTable(ranked);
   attachSorting(ranked);
   const search = document.getElementById('search');
-  const domain = document.getElementById('domainFilter');
+  const startDate = document.getElementById('startDate');
+  const endDate = document.getElementById('endDate');
+  
+  // Set end date to current date by default
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  endDate.value = todayStr;
+  
   function refresh() { renderTable(rank(filterRows(rows))); }
   search.addEventListener('input', refresh);
-  domain.addEventListener('change', refresh);
+  startDate.addEventListener('change', refresh);
+  endDate.addEventListener('change', refresh);
 })();
